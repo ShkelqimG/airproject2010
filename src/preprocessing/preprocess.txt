@@ -1,13 +1,13 @@
 # proprocessing to twitter data
-# input format: tweetID;;usrID;;text
-# delete the following things
-# 1. duplicated tweets
-# 2. usrnames Done
-# 3. links Done
-# 4. :P ? together with :( -> frowny
-# 5. have both smiley and frowny emoticons
-# 6. loooove 
-# 7. shortcut words
-# 8. dont
-# 9. dictionary proper parameter
-# 10. no space between words
+
+# 1. duplicated tweets							Done
+# 2. usrnames 									Done
+# 3. links 										Done
+# 4. :P ? together with :( -> frowny			NEEDED
+# 5. have both smiley and frowny emoticons		NEEDED
+# 6. loooove									Done
+# 7. shortcut words								NEEDED
+# 8. dont										MIGHT
+# 9. dictionary proper parameter				NEEDED
+# 10. no space between words					
+# 11. punctuation								Done
