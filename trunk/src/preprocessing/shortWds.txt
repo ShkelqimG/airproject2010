@@ -1,0 +1,40 @@
+Are you OK;RUOK
+Are;R
+Ate;8
+Be;B
+Before;B4
+Be seeing you;BCNU
+Cute;QT
+Date;D8
+Dinner;DNR
+Easy;EZ
+Excellent;XLNT
+Fate;F8
+For;4
+Great;GR8
+Late;L8
+Later;L8R
+Lots of love;Lol
+Love;LUV
+Mate;M8
+Please;PLS
+Please call me;PCMu
+Rate;R8
+See you;CU
+Speak;SPK
+Thanks;THX
+Thank you;THNQ
+To;2
+To be;2B
+Today;2DAY
+Tomorrow;2MORO
+Want to;WAN2
+What;WOT
+Work;WRK
+Why;Y
+You;U
+please;plz
+what the fuck;wtf
+your;ur
+abt:
+2mrw;tomorrow

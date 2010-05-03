@@ -1,0 +1,548 @@
+#LyX 1.6.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Twitter sentiment analysis: Good or Bad
+\end_layout
+
+\begin_layout Author
+Ravi Gupta and Ninghang Hu
+\end_layout
+
+\begin_layout Date
+April 16, 2010
+\end_layout
+
+\begin_layout Abstract
+in......
+ For the training approach, we will use tweets that include emoticons.
+ Emoticons can be considered as a noisy label, which can hopefully indicate
+ the sentiment information of the tweet to some extent.
+ 
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+twitter tweets
+\end_layout
+
+\begin_layout Standard
+features of twitter(casual language
+\backslash
+short message
+\backslash
+short words
+\backslash
+duplicate terms)
+\end_layout
+
+\begin_layout Section
+Data Collecting
+\end_layout
+
+\begin_layout Subsection
+Twitter Scrapper
+\end_layout
+
+\begin_layout Standard
+Twython is a set of Twitter APIs for python users.
+ We use the search function which can return a number of tweets for each
+ call.
+ Each result will provide not only the message of the tweet but also the
+ relavant information.
+ As our approach focus on the message itself, we only keep the text, user
+ ID and tweet ID, which will make life easiter while eliminating dumplicated
+ terms in the preprocessing part.
+ 
+\end_layout
+
+\begin_layout Standard
+Within every hour, over 1,500,000
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+www.tweespeed.com-TweeSpeed The Twitter Instant Speed Meter
+\end_layout
+
+\end_inset
+
+ new tweets are published on Twitter.
+ However, according to our implementation, there are only 0.667% tweets with
+ a sentiment emoticon.
+ The number of tweets we got per hour is approximately 10,000.
+ This might due to the limitation of Twitter API, because some users can
+ be absent according to their privacy settings
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-1"
+
+\end_inset
+
+.
+ Thus, the scrapper have to wait 2 second to avoid getting too much duplicated
+ data.
+ Besides, there is also a limitation on search rate, which will result in
+ errors.
+ We simply solved the problem by asking the scrapper to wait for 10 seconds
+ and run again.
+ 
+\end_layout
+
+\begin_layout Standard
+English only
+\end_layout
+
+\begin_layout Standard
+In the experiment, we also found that Twitter API support ambiguity search.
+ For example, while we are searching 
+\begin_inset Quotes eld
+\end_inset
+
+:)
+\begin_inset Quotes erd
+\end_inset
+
+, the key word will be mapped into a set of similar emoticons, see Table
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Mapping-of-Emoticons"
+
+\end_inset
+
+, and the search result will also include other smiley icons.
+ Thus we only need to use :) to search tweets that include a smiley.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mapping to :)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mapping to :(
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+:)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+:(
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+: )
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+: (
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+:-)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+:-(
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+=)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+=(
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+:D
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+:P
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+lol
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Mapping-of-Emoticons"
+
+\end_inset
+
+Mapping of Emoticons
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We run the scrapper for approximately XX days and totally XX tweets were
+ collected(including XX with positive emoticons and XX with negative emoticons).
+\end_layout
+
+\begin_layout Subsection
+Preprocessing
+\end_layout
+
+\begin_layout Standard
+Tweet is quite different from formal languages.
+ As in twitter, most of the users prefer to use short cut words, emoticons
+ and loop characters to express their ideas.
+ Some users upload tweets by mobile phones and they are more likely to type
+ at a high speed, which resulted in spelling errors.
+ Besides the usernames and the links should also be considered as they should
+ not affect the result of classification.
+ As a result of all these features, preprocessing is quite crucial to reduce
+ the side effect of casual language as well as the the sa casual language
+ which meansIn order to reduce the dimension of features space.
+\end_layout
+
+\begin_layout Enumerate
+Duplicated tweets
+\begin_inset Newline newline
+\end_inset
+
+We used the tweets with emoticons as our training data.
+ As users are unlikely to add emoticon all the time and the limitation of
+ Twitter API, only a small number of tweets can be get every hour.
+ But our search frequency was set quite high to get as many tweets as possible,
+ which resulted in a lot of duplicates.
+ We simply recorded the tweetID while searching and remove all the duplicated
+ data.
+\end_layout
+
+\begin_layout Enumerate
+Links and Username
+\begin_inset Newline newline
+\end_inset
+
+Twitter users will use links to share intersting websites.
+ Those links is consisted of a sequence of words, and sometimes the words
+ will bias the sentiment classification.
+ For example, the tweet
+\bar under
+ 
+\bar default
+shown
+\bar under
+ 
+\bar default
+in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:a-link-with"
+
+\end_inset
+
+ will be classified as a Positive tweet as the word 
+\emph on
+happy 
+\emph default
+has high probability of Happy emotion.
+ On the other hand, the lenth of a link is usually quite long, and it will
+ take a lot of space and time to process.
+ Similarly, a user whose username is Happy will also have a bad effect on
+ the results.
+\begin_inset Newline newline
+\end_inset
+
+We use URL and USERNAME to replace or the links and usernames in our database
+ to eliminate the side effects.
+\end_layout
+
+\begin_layout Enumerate
+Loop Characters
+\begin_inset Newline newline
+\end_inset
+
+Loop characters are quite common in Twitter.
+ For example, people usually say 
+\begin_inset Quotes eld
+\end_inset
+
+LOOOOVVVVEEEE
+\begin_inset Quotes erd
+\end_inset
+
+ to expressive their deep love.
+ In commonly used English, we found that there is hardly any characters
+ showing consecutively more than two times.
+ So we will change the word into 
+\begin_inset Quotes eld
+\end_inset
+
+LOOVVEE
+\begin_inset Quotes erd
+\end_inset
+
+, which will be much easier for the word correction.
+\end_layout
+
+\begin_layout Enumerate
+Tweet include both smile and frown
+\begin_inset Newline newline
+\end_inset
+
+As we searched the both smile and frown emoticons separately, some tweets
+ with both negative and positive emotions will be present in both dataset.
+ We removed these tweets from our training set.
+ For example, 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+USERNAME lol he wasn't yesterday but we're alright now :) aaghh i have to
+ go to work when its nice and sunnyy..
+ typical! :-(
+\emph default
+
+\begin_inset Quotes eld
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Punctuation
+\end_layout
+
+\begin_layout Enumerate
+Word correction
+\end_layout
+
+\begin_layout Enumerate
+:P good or bad
+\end_layout
+
+\begin_layout Section
+Classification
+\end_layout
+
+\begin_layout Standard
+intro.classifier and n-gram
+\end_layout
+
+\begin_layout Standard
+Key Words Classifier
+\end_layout
+
+\begin_layout Standard
+Naive Bayes Classifier
+\end_layout
+
+\begin_layout Standard
+Support Vector Machine
+\end_layout
+
+\begin_layout Standard
+Training approach
+\end_layout
+
+\begin_layout Section
+Experiment Results
+\end_layout
+
+\begin_layout Standard
+cm graph
+\end_layout
+
+\begin_layout Standard
+roc graph
+\end_layout
+
+\begin_layout Standard
+precision and recall
+\end_layout
+
+\begin_layout Section
+Future Work
+\end_layout
+
+\begin_layout Standard
+different language
+\end_layout
+
+\begin_layout Standard
+facebook youtube google buzz in the future
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+http://help.twitter.com/forums/10713/entries/42646
+\end_layout
+
+\end_body
+\end_document
