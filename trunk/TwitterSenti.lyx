@@ -375,7 +375,7 @@ We used the tweets with emoticons as our training data.
 \end_layout
 
 \begin_layout Enumerate
-Links and Username
+Links, Emails and Usernames
 \begin_inset Newline newline
 \end_inset
 
@@ -386,31 +386,108 @@ Twitter users will use links to share intersting websites.
 \bar under
  
 \bar default
-shown
-\bar under
- 
-\bar default
-in Table 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:a-link-with"
 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+@ninghang http://www.happy.cn
+\emph default
+
+\begin_inset Quotes erd
 \end_inset
 
  will be classified as a Positive tweet as the word 
 \emph on
 happy 
 \emph default
-has high probability of Happy emotion.
- On the other hand, the lenth of a link is usually quite long, and it will
- take a lot of space and time to process.
- Similarly, a user whose username is Happy will also have a bad effect on
- the results.
+has high probability of positive emotion.
+ Besides, the lenth of a link is usually quite long, and it will take a
+ lot of space and time to process.
+ Similarly, a user named 
+\emph on
+Happy 
+\emph default
+or a email named 
+\emph on
+happy@gmail.com
+\emph default
+ will have a bad effect on the results as well.
+ 
 \begin_inset Newline newline
 \end_inset
 
-We use URL and USERNAME to replace or the links and usernames in our database
- to eliminate the side effects.
+Thus we use URL, EMAIL and USERNAME to replace all the links, emails and
+ usernames in our database to eliminate the side effects.
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+URL:
+\end_layout
+
+\begin_layout Plain Layout
+((?:http|https)://[a-z0-9
+\backslash
+/
+\backslash
+?=_#&%~-]+(
+\backslash
+.[a-z0-9
+\backslash
+/
+\backslash
+?=_#&%~-]+)+)|www(
+\backslash
+.[a-z0-9
+\backslash
+/
+\backslash
+?=_#&%~-]+){2,}'
+\end_layout
+
+\begin_layout Plain Layout
+EMAIL:
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+w+@
+\backslash
+w+.[a-zA-Z]{2,4}
+\end_layout
+
+\begin_layout Plain Layout
+USERNAME:
+\end_layout
+
+\begin_layout Plain Layout
+@([A-Za-z0-9_]+)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+regular expression patterns
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Enumerate
