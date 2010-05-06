@@ -46,7 +46,7 @@ for key in dictID:
 file.close()
 
 # Step 1: remove duplicate tweets and loop characters #
-file = open("Step1.rmDupChar",'a')
+file = open("Step1.rmDupChar",'w')
 for line in lines1:
 	line = line.split(";;")
 	ID = line[1]
@@ -86,7 +86,7 @@ lines = content.splitlines()
 pattern = re.compile('\W+')
 file.close()
 
-file = open("Step3.rmPUNC",'a')
+file = open("Step3.rmPUNC",'w')
 for line in lines:
 	line = line.split(";;")
 	nwline = re.sub(pattern,' ',line[1])
