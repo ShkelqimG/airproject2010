@@ -1,46 +1,68 @@
+#!/usr/bin/python
 from svmutil import *
 import pickle
 
-print "loading dictionary"
+print "loading dictionary..."
 # load dictionary
 dictfile = open("/home/huninghang/workspace/twitterSenti/src/classification/svm/DICT")
 dict = pickle.load(dictfile)
+dictfile.close()
 "Done"
 
-print "loading twitter dataset"
+print "loading train set..."
 # load twitter data base
-file = open("/home/huninghang/workspace/twitterSenti/DB/training/Step3.rmPUNC",'r')
-lines = file.read().splitlines()
+file = open("/home/huninghang/workspace/twitterSenti/DB/trainset/Step3.rmPUNC",'r')
+linesTrain = file.read().splitlines()
+file.close()
 print "Done"
 
+print "loading test set..."
+# load twitter data base
+file = open("/home/huninghang/workspace/twitterSenti/DB/testset/Step3.rmPUNC",'r')
+linesTest = file.read().splitlines()
+file.close()
+print "Done"
+
+# combine trainset and test set
+lines = linesTrain + linesTest
+
+print "formating training data..."
 # format training data
 y = []
 x = []
-i = 1
+i = 0
 for line in lines:
-	print "processing Line",i
+	xi = {}
+	# print "processing Line", i
 	label, tweet = line.split(";;")
 	words = tweet.split()
+	label = int(label)
 	if int(label) == 4:
 		label = 1
 	elif int(label) == 0:
 		label = -1
+	else:
+		continue
 	y.append(label)
-	score = {}
 	for word in words:
-		if word == "USERNAME" or word == "EMAIL" or word == "URL":
+		if word not in dict:
 			continue
 		dictIdx = dict[word][0]
-		score[dictIdx] = 1
-	x.append(score)
+		xi[dictIdx] = 1
 	i += 1
+	x.append(xi)
+ 
 
 print "Training!"
-m = svm_train(y[:200],x[:200],'-c 4 -b 1')
+prob = svm_problem(y[0:40000],x[0:40000])
+param = svm_parameter('-c 4 -b 1')
+m = svm_train(prob,param)
 print "Training Done!"
-p_label,p_acc,p_val = svm_predict(y[200:400], x[200:400], m)
+print "Classifying"
+p_label,p_acc,p_val = svm_predict(y[40000:], x[40000:], m)
 print "Classification Done!"
-
 print p_label
-print p_acc
-print p_val
+#print p_label
+#print p_acc
+#print p_val
+

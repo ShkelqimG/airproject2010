@@ -1,18 +1,5 @@
 import re
 
-add1 = "/home/huninghang/workspace/twitterSenti/DB/paper/frowny.txt"
-add2 = "/home/huninghang/workspace/twitterSenti/DB/paper/smiley.txt"
-
-# read database
-file1 = open(add1,'r')
-file2 = open(add2,'r')
-lines1 = file1.read().lower().splitlines()
-lines2 = file2.read().lower().splitlines()
-lines1.extend(lines2)
-file1.close()
-file2.close()
-
-# replace words "looooove" by "loove" 
 def rmDupChar(tweet):
 	base = None
 	num = 0
@@ -31,9 +18,18 @@ def rmDupChar(tweet):
 	return tweet
 
 # --------------------------main------------------------------
+# training set
+#add = "/home/huninghang/workspace/twitterSenti/DB/paper/train.40000.2009.05.25"
+# test set
+add = "/home/huninghang/workspace/twitterSenti/DB/paper/testdata.manual.2009.05.25"
+
+file = open(add,'r')
+lines = file.read().lower().splitlines()
+file.close()
+
 # create ID dictionary to remove duplicates			#
 dictID = {}
-for line in lines1:
+for line in lines:
 	line = line.split(';;')
 	ID = line[1]
 	if ID in dictID:
@@ -47,10 +43,11 @@ file.close()
 
 # Step 1: remove duplicate tweets and loop characters #
 file = open("Step1.rmDupChar",'w')
-for line in lines1:
+for line in lines:
 	line = line.split(";;")
 	ID = line[1]
 	if dictID[ID] > 1:
+		print "duplicated item", ID, "is removed"
 		continue
 	else:
 		tweet = line[5]
