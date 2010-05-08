@@ -9,14 +9,30 @@ dict = pickle.load(dictfile)
 dictfile.close()
 "Done"
 
-print "loading train set..."
+# preprocess dictionary - delete low frequency words
+deList = []
+for key in dict:
+	if dict[key] in [1,2,3]:
+		deList.append(key)
+for item in deList:
+	del dict[item]
+
+# prepare word index
+i = 1
+idx = {}
+for key in dict:
+	idx[key] = i
+	i += 1
+print len(dict)
+
+#print "loading train set..."
 # load twitter data base
 file = open("/home/huninghang/workspace/twitterSenti/DB/trainset/Step3.rmPUNC",'r')
 linesTrain = file.read().splitlines()
 file.close()
-print "Done"
+#print "Done"
 
-print "loading test set..."
+#print "loading test set..."
 # load twitter data base
 file = open("/home/huninghang/workspace/twitterSenti/DB/testset/Step3.rmPUNC",'r')
 linesTest = file.read().splitlines()
@@ -30,7 +46,6 @@ print "formating training data..."
 # format training data
 y = []
 x = []
-i = 0
 for line in lines:
 	xi = {}
 	# print "processing Line", i
@@ -47,22 +62,25 @@ for line in lines:
 	for word in words:
 		if word not in dict:
 			continue
-		dictIdx = dict[word][0]
-		xi[dictIdx] = 1
-	i += 1
+		wordIdx = idx[word]
+		xi[wordIdx] = 1
 	x.append(xi)
- 
 
 print "Training!"
-prob = svm_problem(y[0:40000],x[0:40000])
-param = svm_parameter('-c 4 -b 1')
-m = svm_train(prob,param)
+m = svm_train(y[0:len(linesTrain)],x[0:len(linesTrain)],'-s 0 -c 10 -t 0 -h 1')
+file = open("SVMmodel2",'w')
+filename = file.name
+file.close()
+svm_save_model(file.name,m)
 print "Training Done!"
+
+# m = svm_load_model('SVMmodel')
 print "Classifying"
-p_label,p_acc,p_val = svm_predict(y[40000:], x[40000:], m)
+p_label,p_acc,p_val = svm_predict(y[len(linesTrain):],x[len(linesTrain):], m)
+
+
 print "Classification Done!"
 print p_label
 #print p_label
 #print p_acc
 #print p_val
-
