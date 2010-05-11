@@ -12,7 +12,7 @@ dictfile.close()
 # preprocess dictionary - delete low frequency words
 deList = []
 for key in dict:
-	if dict[key] in [1,2,3]:
+	if dict[key] in [1,2]:
 		deList.append(key)
 for item in deList:
 	del dict[item]
@@ -67,14 +67,14 @@ for line in lines:
 	x.append(xi)
 
 print "Training!"
-m = svm_train(y[0:len(linesTrain)],x[0:len(linesTrain)],'-s 0 -c 10 -t 0 -h 1')
-file = open("SVMmodel2",'w')
+m = svm_train(y[0:len(linesTrain)],x[0:len(linesTrain)],'-s 1 -c 256 -t 2 -h 0')
+file = open("SVMmodel5",'w')
 filename = file.name
 file.close()
 svm_save_model(file.name,m)
 print "Training Done!"
 
-# m = svm_load_model('SVMmodel')
+# m = svm_load_model('SVMmodel2')
 print "Classifying"
 p_label,p_acc,p_val = svm_predict(y[len(linesTrain):],x[len(linesTrain):], m)
 

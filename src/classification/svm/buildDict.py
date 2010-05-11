@@ -1,18 +1,17 @@
 # create a dictionary
 # key - word
-# value - number of occurrences
-i = 1
-def buildDict(tweet,dict,i):
+# dict[key] - number of occurrences
+
+def buildDict(tweet,dict):
 	words = tweet.split(' ')
 	for word in words:
 		if word in ['USERNAME','URL','','EMAIL']:
 			continue
 		elif word in dict:
-			dict[word][1] += 1
+			dict[word] += 1
 		else:
-			dict[word] = [i,1]
-			i += 1
-	return dict,i
+			dict[word] = 1
+	return dict
 
 import pickle
 
@@ -24,9 +23,8 @@ lines = content.splitlines()
 for line in lines:
 	line = line.split(";;")
 	tweet = line[1]
-	dict,i = buildDict(tweet,dict,i)
+	dict = buildDict(tweet,dict)
 
 dictfile = open("DICT",'w')
 pickle.dump(dict,dictfile)
 dictfile.close()
-
