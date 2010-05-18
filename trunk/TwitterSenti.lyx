@@ -70,6 +70,11 @@ twitter tweets
 \end_layout
 
 \begin_layout Standard
+In Twitter, each tweet owns a unique tweet ID.
+ 
+\end_layout
+
+\begin_layout Standard
 features of twitter(casual language
 \backslash
 short message
@@ -89,18 +94,17 @@ Twitter Scrapper
 
 \begin_layout Standard
 Twython is a set of Twitter APIs for python users.
- We use the search function which can return a number of tweets for each
- call.
+ Its search API function can return a number of tweets for each query.
  Each result will provide not only the message of the tweet but also the
- relavant information.
- As our approach focus on the message itself, we only keep the text, user
- ID and tweet ID, which will make life easiter while eliminating dumplicated
- terms in the preprocessing part.
+ relavent information.
+ As our approach focus on the message itself, we only keep the text and
+ tweet ID.
+ The tweet ID will be used to eliminating dumplicated terms in the preprocessing.
  
 \end_layout
 
 \begin_layout Standard
-Within every hour, over 1,500,000
+There are over 1,500,000 tweets are posted online every hour
 \begin_inset Foot
 status open
 
@@ -110,25 +114,30 @@ www.tweespeed.com-TweeSpeed The Twitter Instant Speed Meter
 
 \end_inset
 
- new tweets are published on Twitter.
- However, according to our implementation, there are only 0.667% tweets with
- a sentiment emoticon.
- The number of tweets we got per hour is approximately 10,000.
- This might due to the limitation of Twitter API, because some users can
- be absent according to their privacy settings
-\begin_inset CommandInset citation
-LatexCommand cite
-key "key-1"
+.
+ However, our approach only focused on the data with smile or frown emoticons
+ which is approximately 1% of the whole tweet collection.
+ The number of tweets we got per hour is only 15,000.
+ This might partly due to the limitation of Twitter API.
+ As it noticed on Twitter, some users can be absent according to their privacy
+ settings
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+http://help.twitter.com/forums/10713/entries/42646 Help resources and troubleshoot
+ing
+\end_layout
 
 \end_inset
 
 .
- Thus, the scrapper have to wait 2 second to avoid getting too much duplicated
- data.
- Besides, there is also a limitation on search rate, which will result in
+ Thus, we asked the scrapper to wait a few seconds to avoid getting too
+ much duplicated data.
+ Besides, search rate is also limited, and we found that if the scrapper
+ will result in errors if it searched too frequently.
+ We found 10 seconds would be a good time span to avoid getting too much
  errors.
- We simply solved the problem by asking the scrapper to wait for 10 seconds
- and run again.
  
 \end_layout
 
@@ -137,7 +146,7 @@ English only
 \end_layout
 
 \begin_layout Standard
-In the experiment, we also found that Twitter API support ambiguity search.
+We also found that Twitter API support ambiguity search.
  For example, while we are searching 
 \begin_inset Quotes eld
 \end_inset
@@ -567,8 +576,28 @@ manually annotated data
 Classification
 \end_layout
 
+\begin_layout Subsection
+Feature Extraction
+\end_layout
+
+\begin_layout Standard
+Unigram
+\end_layout
+
+\begin_layout Standard
+Bigram
+\end_layout
+
+\begin_layout Standard
+Unigram with bigram
+\end_layout
+
 \begin_layout Standard
 intro.classifier and n-gram
+\end_layout
+
+\begin_layout Subsection
+Feature Selection
 \end_layout
 
 \begin_layout Subsection
@@ -606,10 +635,6 @@ Naive Bayes Classifier
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -713,10 +738,6 @@ EMAIL
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -727,7 +748,123 @@ Support Vector Machine
 \end_layout
 
 \begin_layout Standard
-Training approach
+Support Vector Machine(SVM) is a popular technic in text classification.
+ Many SVM packages are publicly available online.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Problem with LibSVM
+\end_layout
+
+\begin_layout Standard
+LibSVM
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CC01a"
+
+\end_inset
+
+ is an integrated software for support vector classification, (C-SVC, nu-SVC),
+ regression (epsilon-SVR, nu-SVR) and distribution estimation (one-class
+ SVM).
+ It also provide programming interface for Python as it has provided interfaces
+ for Python, which is used most of the time in our implementation.
+\end_layout
+
+\begin_layout Standard
+Although there are only four common kernels in SVM, training with different
+ parameters will take a long time.
+ According to a practical guide written by the authors of libSVM, we chose
+ Radius Basis Function(RBF) kernel since it has obvious advantage over other
+ kernels
+\begin_inset CommandInset citation
+LatexCommand cite
+key "hsu2003practical"
+
+\end_inset
+
+: it can handle the case when the relation between class labels and attributes
+ is nonlinear; further, the linear kernel is a special case of 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "keerthi2003asymptotic"
+
+\end_inset
+
+since the linear kernel with a penalty parameter 
+\emph on
+C
+\emph default
+ has the same performance as the RBF kernel with some parameters (
+\begin_inset Formula $C,\gamma$
+\end_inset
+
+).
+ In addition, the sigmoid kernel behaves like RBF for certain parameters
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "lin2003study"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+It was not known before hand which 
+\begin_inset Formula $C$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ pair is best in our classification.
+ Thus we used a grid search on those two parameters to pick the pair with
+ the best performance.
+ Since 
+\begin_inset Formula $C$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ are independent of each other, the grid search can run on different computers
+ which can save a lot of time.
+ We used grid search on 
+\begin_inset Formula $C=2^{-5},2^{-3},...,2^{-15}$
+\end_inset
+
+, 
+\begin_inset Formula $\gamma=2^{-15},2^{-13},...,2^{3}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To 
+\end_layout
+
+\begin_layout Standard
+In the Feature Extraction, 
+\end_layout
+
+\begin_layout Standard
+-s svm_type : set type of SVM
+\end_layout
+
+\begin_layout Standard
+CHOOSE KERNEL SVM model, 
+\end_layout
+
+\begin_layout Standard
+Other PARAMETERS.
+ No big difference in some parameter.
+ How to select parameters(citation)
 \end_layout
 
 \begin_layout Section
@@ -860,10 +997,6 @@ confusion matrix of key words classifier
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -1068,14 +1201,15 @@ facebook youtube google buzz in the future
 Conclusion
 \end_layout
 
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "key-1"
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "TwitterSenti"
+options "plain"
 
 \end_inset
 
-http://help.twitter.com/forums/10713/entries/42646
+
 \end_layout
 
 \begin_layout Section*
