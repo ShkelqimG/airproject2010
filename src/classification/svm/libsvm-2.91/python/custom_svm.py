@@ -66,21 +66,28 @@ for line in lines:
 		xi[wordIdx] = 1
 	x.append(xi)
 
-print "Training!"
-m = svm_train(y[0:len(linesTrain)],x[0:len(linesTrain)],'-s 1 -c 256 -t 2 -h 0')
-file = open("SVMmodel5",'w')
-filename = file.name
-file.close()
-svm_save_model(file.name,m)
-print "Training Done!"
+fileNr = 0
+for i in range(-5,16,2):
+	c = 2**i
+	try:
+		param = '-s 0 -c '+str(c)+' -t 0'
+		fileNr += 1
+		print "Training! Nr:",fileNr,param 
+		m = svm_train(y[0:len(linesTrain)],x[0:len(linesTrain)],param)
+		#file = open("model"+str(fileNr),'w')
+		#svm_save_model(file.name,m)
+		#file.close()
+		print "Training Done!"
 
-# m = svm_load_model('SVMmodel2')
-print "Classifying"
-p_label,p_acc,p_val = svm_predict(y[len(linesTrain):],x[len(linesTrain):], m)
-
-
-print "Classification Done!"
-print p_label
-#print p_label
-#print p_acc
-#print p_val
+		#m = svm_load_model('/result_models/SVMmodel2')
+		print "Classifying"
+		p_label,p_acc,p_val = svm_predict(y[len(linesTrain):],x[len(linesTrain):], m)
+		print "Classification Done!"
+		file = open("result",'a')
+		file.write(param+";"+str(p_acc)+'\n')	
+		file.close()
+	except:
+		file = open("result",'a')
+		file.write(param+";ERROR\n")	
+		file.close()
+		continue
