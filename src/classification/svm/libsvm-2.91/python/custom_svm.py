@@ -12,7 +12,7 @@ dictfile.close()
 # preprocess dictionary - delete low frequency words
 deList = []
 for key in dict:
-	if dict[key] in [1,2]:
+	if dict[key] in range(1,7):
 		deList.append(key)
 for item in deList:
 	del dict[item]
@@ -67,10 +67,10 @@ for line in lines:
 	x.append(xi)
 
 fileNr = 0
-for i in range(-5,16,2):
+for i in range(3,16,2):
 	c = 2**i
 	try:
-		param = '-s 0 -c '+str(c)+' -t 0'
+		param = '-s 0 -c '+str(c)+' -t 0 -h 0'
 		fileNr += 1
 		print "Training! Nr:",fileNr,param 
 		m = svm_train(y[0:len(linesTrain)],x[0:len(linesTrain)],param)
