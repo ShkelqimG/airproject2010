@@ -2,8 +2,13 @@
 \lyxformat 345
 \begin_document
 \begin_header
-\textclass article
+\textclass sigplanconf
 \use_default_options true
+\begin_modules
+theorems-ams
+theorems-ams-extended
+theorems-sec
+\end_modules
 \language english
 \inputencoding auto
 \font_roman default
@@ -17,6 +22,7 @@
 
 \graphics default
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
@@ -54,10 +60,22 @@ April 16, 2010
 \end_layout
 
 \begin_layout Abstract
-in......
- For the training approach, we will use tweets that include emoticons.
- Emoticons can be considered as a noisy label, which can hopefully indicate
- the sentiment information of the tweet to some extent.
+The paper provided an approach for automatically classifying the sentiment
+ of Twitter messages.
+ These messages are classified as either positive or negative.
+ This is useful for consumers who want to research the sentiment of products
+ before purchase, or companies that want to monitor the public sentiment
+ of their brands.
+ Our training data consists of Twitter messages with emoticons, and they
+ are used as noisy labels.
+ This type of training data is abundantly available and can be obtained
+ through automated ways.
+\end_layout
+
+\begin_layout Abstract
+We made a test to choose the number of features for classification and we
+ showed different results of machine learning algorithms including Naive
+ Bayes, Maximum Entropy, and Support Vector Machine.
  
 \end_layout
 
@@ -66,26 +84,41 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-twitter tweets
+Twitter is a social network website and it provides the users with services
+ of sending or reading a message, which is also known as a tweet.
+ The sentiment information of tweets is quite interesting because they are
+ posted by individuals, and sometimes they show the users's emotion or attitude
+ to certain events.
 \end_layout
 
 \begin_layout Standard
-In Twitter, each tweet owns a unique tweet ID.
- 
-\end_layout
+Our aim is to build a system that can classify positive and negative messsage
+ by using supervised learning.
+ In the training part, supervised learning usually requires hand-labeled
+ training data.
+ With a large range of topics on Twitter, it would be quite difficult to
+ manually annotate all the labels.
+ Our solution is to use the training data with emotions.
+ This approach was introduced by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "read2005using"
 
-\begin_layout Standard
-features of twitter(casual language
-\backslash
-short message
-\backslash
-short words
-\backslash
-duplicate terms)
+\end_inset
+
+.
+ The emoticons serve as noisy labels.
+ For example, :) in a tweet indicates that the tweet contains negative sentiment.
+ With the help of the Twitter API, it is easy to extract large amounts of
+ tweets with emoticons in them.
+ This is a significant improvement over the many hours it may otherwise
+ take to hand-label training data.
+ We run classifiers trained on emoticon data against a test set of tweets
+ (which may or may not have emoticons in them).
 \end_layout
 
 \begin_layout Section
-Data Collecting
+Data Preparasion
 \end_layout
 
 \begin_layout Subsection
@@ -94,12 +127,12 @@ Twitter Scrapper
 
 \begin_layout Standard
 Twython is a set of Twitter APIs for python users.
- Its search API function can return a number of tweets for each query.
+ Its search API function can return a number of results for each query.
  Each result will provide not only the message of the tweet but also the
- relavent information.
+ relevant information.
  As our approach focus on the message itself, we only keep the text and
  tweet ID.
- The tweet ID will be used to eliminating dumplicated terms in the preprocessing.
+ The tweet ID will be used to eliminating duplicated terms in the preprocessing.
  
 \end_layout
 
@@ -117,16 +150,15 @@ www.tweespeed.com-TweeSpeed The Twitter Instant Speed Meter
 .
  However, our approach only focused on the data with smile or frown emoticons
  which is approximately 1% of the whole tweet collection.
- The number of tweets we got per hour is only 15,000.
- This might partly due to the limitation of Twitter API.
+ The number of tweets we got per hour is 15,000.
+ This was partly due to the limitation of Twitter API.
  As it noticed on Twitter, some users can be absent according to their privacy
  settings
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
-http://help.twitter.com/forums/10713/entries/42646 Help resources and troubleshoot
-ing
+http://help.twitter.com/forums/10713/entries/42646
 \end_layout
 
 \end_inset
@@ -139,10 +171,6 @@ ing
  We found 10 seconds would be a good time span to avoid getting too much
  errors.
  
-\end_layout
-
-\begin_layout Standard
-English only
 \end_layout
 
 \begin_layout Standard
@@ -185,7 +213,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-Mapping to :)
+Positive
 \end_layout
 
 \end_inset
@@ -194,7 +222,7 @@ Mapping to :)
 \begin_inset Text
 
 \begin_layout Plain Layout
-Mapping to :(
+Negative
 \end_layout
 
 \end_inset
@@ -348,8 +376,9 @@ Mapping of Emoticons
 \end_layout
 
 \begin_layout Standard
-We run the scrapper for approximately XX days and totally XX tweets were
- collected(including XX with positive emoticons and XX with negative emoticons).
+We run the scrapper for approximately 40 hours and totally 384397 tweets
+ were collected(including 232442 with positive emoticons and 151955 with
+ negative emoticons).
 \end_layout
 
 \begin_layout Subsection
@@ -364,9 +393,8 @@ Tweet is quite different from formal languages.
  at a high speed, which resulted in spelling errors.
  Besides the usernames and the links should also be considered as they should
  not affect the result of classification.
- As a result of all these features, preprocessing is quite crucial to reduce
- the side effect of casual language as well as the the sa casual language
- which meansIn order to reduce the dimension of features space.
+ As a result of all these features, preprocessing is quite crucial on reducing
+ the side effect of casual language and the dimension of the feature space.
 \end_layout
 
 \begin_layout Enumerate
@@ -379,7 +407,7 @@ We used the tweets with emoticons as our training data.
  Twitter API, only a small number of tweets can be get every hour.
  But our search frequency was set quite high to get as many tweets as possible,
  which resulted in a lot of duplicates.
- We simply recorded the tweetID while searching and remove all the duplicated
+ We simply recorded the tweet ID while searching and remove all the duplicated
  data.
 \end_layout
 
@@ -388,32 +416,28 @@ Links, Emails and Usernames
 \begin_inset Newline newline
 \end_inset
 
-Twitter users will use links to share intersting websites.
+Twitter users use links to share interesting websites.
  Those links is consisted of a sequence of words, and sometimes the words
- will bias the sentiment classification.
+ can bias the sentiment classification.
  For example, the tweet
-\bar under
- 
-\bar default
+\emph on
 
-\begin_inset Quotes eld
+\begin_inset Newline newline
 \end_inset
 
-
-\emph on
 @ninghang http://www.happy.cn
 \emph default
 
-\begin_inset Quotes erd
+\begin_inset Newline newline
 \end_inset
 
- will be classified as a Positive tweet as the word 
+is classified into the positive category as the word 
 \emph on
 happy 
 \emph default
 has high probability of positive emotion.
- Besides, the lenth of a link is usually quite long, and it will take a
- lot of space and time to process.
+ Besides, the length of a link is usually quite long, and it takes a lot
+ of space and time to process.
  Similarly, a user named 
 \emph on
 Happy 
@@ -422,24 +446,31 @@ or a email named
 \emph on
 happy@gmail.com
 \emph default
- will have a bad effect on the results as well.
+ can have a bad effect on the results as well.
  
 \begin_inset Newline newline
 \end_inset
 
-Thus we use URL, EMAIL and USERNAME to replace all the links, emails and
- usernames in our database to eliminate the side effects.
+Thus we used the words URL, EMAIL and USERNAME to replace all the links,
+ emails and usernames in our database to eliminate the side effects.
+ The regular expression patttern was shown in Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:regular-expression-patterns"
+
+\end_inset
+
+.
+ In our experiment, totally 198133 usernames, 19819 URLs and 319 email address
+ were replaced.
+ 
 \begin_inset Float algorithm
 wide false
 sideways false
 status open
 
-\begin_layout Plain Layout
-URL:
-\end_layout
-
-\begin_layout Plain Layout
-((?:http|https)://[a-z0-9
+\begin_layout Description
+URL ((?:http|https)://[a-z0-9
 \backslash
 /
 \backslash
@@ -448,6 +479,10 @@ URL:
 .[a-z0-9
 \backslash
 /
+\begin_inset Newline newline
+\end_inset
+
+
 \backslash
 ?=_#&%~-]+)+)|www(
 \backslash
@@ -455,42 +490,36 @@ URL:
 \backslash
 /
 \backslash
-?=_#&%~-]+){2,}'
+?=_#&%~-]+){2,}
 \end_layout
 
-\begin_layout Plain Layout
-EMAIL:
-\end_layout
-
-\begin_layout Plain Layout
-
+\begin_layout Description
+EMAIL 
 \backslash
 w+@
 \backslash
 w+.[a-zA-Z]{2,4}
 \end_layout
 
-\begin_layout Plain Layout
-USERNAME:
-\end_layout
-
-\begin_layout Plain Layout
-@([A-Za-z0-9_]+)
+\begin_layout Description
+USERNAME @([A-Za-z0-9_]+)
 \end_layout
 
 \begin_layout Plain Layout
 \begin_inset Caption
 
 \begin_layout Plain Layout
-regular expression patterns
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:regular-expression-patterns"
+
+\end_inset
+
+regular expression patterns of preprocessing
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -513,10 +542,10 @@ LOOOOVVVVEEEE
 \begin_inset Quotes erd
 \end_inset
 
- to expressive their deep love.
+ to expressive their feelings.
  In commonly used English, we found that there is hardly any characters
  showing consecutively more than two times.
- So we will change the word into 
+ So we changed the word into 
 \begin_inset Quotes eld
 \end_inset
 
@@ -524,16 +553,16 @@ LOOVVEE
 \begin_inset Quotes erd
 \end_inset
 
-, which will be much easier for the word correction.
+, which made it easier for word correction.
 \end_layout
 
 \begin_layout Enumerate
-Tweet include both smile and frown
+Tweet include both smiley and frowny emoticons
 \begin_inset Newline newline
 \end_inset
 
 As we searched the both smile and frown emoticons separately, some tweets
- with both negative and positive emotions will be present in both dataset.
+ with both negative and positive emotions were present on both dataset.
  We removed these tweets from our training set.
  For example, 
 \begin_inset Quotes eld
@@ -554,22 +583,53 @@ USERNAME lol he wasn't yesterday but we're alright now :) aaghh i have to
 
 \begin_layout Enumerate
 Punctuation
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Enumerate
-Word correction
+Punctuations at the beginning or the end of a sentence can make a lot of
+ new words as well.
+ For example, at the end of our last example, the word 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+typical!
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+ would cause noise if it was added to the features.
 \end_layout
 
 \begin_layout Enumerate
 :P good or bad
+\begin_inset Newline newline
+\end_inset
+
+In the search result of Twitter API, the emoticon :P is considered as a
+ unhappy emotion.
+ However, we found that most of the time :P indicates a positive status.
+ Thus is our experiment, we removed all the terms including :P emoticon.
+ 
 \end_layout
 
 \begin_layout Subsection
-Training set and Test set
+Test set
 \end_layout
 
 \begin_layout Standard
-manually annotated data
+For the test set, we used a manually anotated dataset
+\begin_inset CommandInset citation
+LatexCommand citet
+key "go-twitter"
+
+\end_inset
+
+.
+ It contains 183 tweets which were selected from different topics.
+ All the tweets have their labels for which class they belong to.
 \end_layout
 
 \begin_layout Section
@@ -592,14 +652,6 @@ Bigram
 Unigram with bigram
 \end_layout
 
-\begin_layout Standard
-intro.classifier and n-gram
-\end_layout
-
-\begin_layout Subsection
-Feature Selection
-\end_layout
-
 \begin_layout Subsection
 Key Words Classifier
 \end_layout
@@ -608,11 +660,11 @@ Key Words Classifier
 Key words classifier is a straight forward way of sentiment classification.
  As a baseline, we used a list of positive and negative words, and counted
  the number of those words in each tweet.
- If the tweet has more positive words than negative ones, it will turn out
- to be positive, and vise versa.
- If there is a tie, it will be classified to positive class since there
- are more positive tweets in the test set.
- The key words list is publicly availabe on Twittratr
+ If the tweet has more positive words than negative ones, it turns out to
+ be positive, and vise verse.
+ If there is a tie, it was classified to positive class since there are
+ more positive tweets in the test set.
+ The key words list is publicly available on Twittratr
 \begin_inset Foot
 status open
 
@@ -630,137 +682,16 @@ www.twittratr.com
 Naive Bayes Classifier
 \end_layout
 
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="2">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell multicolumn="1" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-USERNAME
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-198133
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-URL
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-19819
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-EMAIL
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-319
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 Support Vector Machine
 \end_layout
 
 \begin_layout Standard
-Support Vector Machine(SVM) is a popular technic in text classification.
+Support Vector Machine(SVM) is a popular technique in text classification.
  Many SVM packages are publicly available online.
- 
-\end_layout
-
-\begin_layout Subsubsection
-Problem with LibSVM
-\end_layout
-
-\begin_layout Standard
-LibSVM
+ LibSVM
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citet
 key "CC01a"
 
 \end_inset
@@ -772,22 +703,236 @@ key "CC01a"
  for Python, which is used most of the time in our implementation.
 \end_layout
 
+\begin_layout Subsubsection
+Feature Selection
+\end_layout
+
 \begin_layout Standard
-Although there are only four common kernels in SVM, training with different
- parameters will take a long time.
- According to a practical guide written by the authors of libSVM, we chose
- Radius Basis Function(RBF) kernel since it has obvious advantage over other
- kernels
+After preprocessing, we made a dictionary for all the words with their occurrenc
+es.
+ Each word in the dictionary was a feature in the classification.
+ 
+\end_layout
+
+\begin_layout Standard
+However, there were 30696 words in the dictionary, and it was too large
+ for SVM classifier.
+ We tested on the whole words and the libSVM took about 7 hours to get the
+ result.
+ Besides, about 17010 words occur only once in the training set(see 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:frequency-of-feature"
+
+\end_inset
+
+).
+ Most of them are numbers(eg.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+520
+\begin_inset Quotes erd
+\end_inset
+
+), misspelled words(eg.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+nive
+\begin_inset Quotes erd
+\end_inset
+
+) or errors caused by preprocessing(eg.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+I'm
+\begin_inset Quotes erd
+\end_inset
+
+ was converted to 
+\begin_inset Quotes eld
+\end_inset
+
+I
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+m
+\begin_inset Quotes erd
+\end_inset
+
+).
+ These words and other low frequency words were considered as noise and
+ were removed before training.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename featureSele.eps
+	width 39page%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:frequency-of-feature"
+
+\end_inset
+
+frequency of feature words
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+High frequency words(stop words) were noise in our approach as well.
+ But we found some of the high frequency words has sentiment information
+ which is quite important for our classification, such as 
+\begin_inset Quotes eld
+\end_inset
+
+better
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+like
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Further, the number of high frequency words was very small compared with
+ low frequency ones.
+ Thus we made no change to these words in this paper.
+ 
+\end_layout
+
+\begin_layout Standard
+We used libSVM and test on different number of features(a bag of words in
+ our case).
+ To avoid bias with our formal test set, we made a extra small test set
+ manually for this part.
+ Words in the dictionary were firstly ordered from high frequency to low
+ frequency, and lower frequency words were added into the features after
+ each process of classification.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename accuracy.eps
+	width 39page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:accuracy-features"
+
+\end_inset
+
+unigram feature selection with default libSVM settings
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:accuracy-features"
+
+\end_inset
+
+ , the accuracy increase dramatically as the number of features growing
+ at the beginning.
+ But after a peak at 80.9% with 3494 features, the accuracy is stable around
+ 79.5%.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Kernels and Parameters
+\end_layout
+
+\begin_layout Standard
+There are four common kernels in libSVM, and it would take a long time to
+ test all of them with different parameters.
+ According to a practical guide written by the authors of libSVM, if the
+ number of features is large, one may not need to map data to a higher dimension
+ space.
+ In other words, the nonlinear mapping does not improve the performance
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citet
 key "hsu2003practical"
 
 \end_inset
 
-: it can handle the case when the relation between class labels and attributes
- is nonlinear; further, the linear kernel is a special case of 
+.
+ In this paper, we used linear kernel since we have more than 4000 features.
+ 
+\end_layout
+
+\begin_layout Standard
+There is another advantage of using linear kernels.
+ We only need to search the parameter C rather than both 
+\begin_inset Formula $C$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma$
+\end_inset
+
+.
+ Although for most non-linear classifications, Radius Basis Function(RBF)
+ kernel is the first choice of SVM and the linear kernel is a special case
+ of 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citet
 key "keerthi2003asymptotic"
 
 \end_inset
@@ -796,75 +941,61 @@ since the linear kernel with a penalty parameter
 \emph on
 C
 \emph default
- has the same performance as the RBF kernel with some parameters (
-\begin_inset Formula $C,\gamma$
+ has the same performance as the RBF kernel with some parameters 
+\begin_inset Formula $C$
 \end_inset
 
-).
- In addition, the sigmoid kernel behaves like RBF for certain parameters
+ and 
+\begin_inset Formula $\gamma$
+\end_inset
+
+, the case is true only we got the best 
+\begin_inset Formula $C$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ pair after searching the entire parameter space.
+ Thus with linear kernel, the searching time is reduced from 
+\begin_inset Formula $N_{c}\times N_{\gamma}$
+\end_inset
+
+ to 
+\begin_inset Formula $N_{c}$
+\end_inset
+
+, where 
+\begin_inset Formula $N_{c}$
+\end_inset
+
+ and 
+\begin_inset Formula $N_{\gamma}$
+\end_inset
+
+ are the corresponding searching times in the classification.
+\end_layout
+
+\begin_layout Standard
+After selected the linear kernel, we made a grid search on the parameters
  
-\begin_inset CommandInset citation
-LatexCommand cite
-key "lin2003study"
+\emph on
 
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-It was not known before hand which 
 \begin_inset Formula $C$
 \end_inset
 
- and 
-\begin_inset Formula $\gamma$
-\end_inset
-
- pair is best in our classification.
- Thus we used a grid search on those two parameters to pick the pair with
- the best performance.
- Since 
-\begin_inset Formula $C$
-\end_inset
-
- and 
-\begin_inset Formula $\gamma$
-\end_inset
-
- are independent of each other, the grid search can run on different computers
- which can save a lot of time.
- We used grid search on 
-\begin_inset Formula $C=2^{-5},2^{-3},...,2^{-15}$
-\end_inset
-
-, 
-\begin_inset Formula $\gamma=2^{-15},2^{-13},...,2^{3}$
+,
+\emph default
+ and
+\emph on
+ 
+\emph default
+the searching grid was 
+\begin_inset Formula $C=2^{-5},2^{-3},...,2^{15}$
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Standard
-To 
-\end_layout
-
-\begin_layout Standard
-In the Feature Extraction, 
-\end_layout
-
-\begin_layout Standard
--s svm_type : set type of SVM
-\end_layout
-
-\begin_layout Standard
-CHOOSE KERNEL SVM model, 
-\end_layout
-
-\begin_layout Standard
-Other PARAMETERS.
- No big difference in some parameter.
- How to select parameters(citation)
 \end_layout
 
 \begin_layout Section
@@ -1190,11 +1321,48 @@ Future Work
 \end_layout
 
 \begin_layout Standard
-different language
+Key words can be combined with the unigram features.
+ As can be seen from our implementation, the accuracy of key words classificatio
+n is over 71%, which is really high considering such a naive approach.
+ This should partly due to the selected key words earns high weights in
+ the sentiment analysis.
+ In order to reduce the dimension of feature, we eliminate some words with
+ lower frequency in our training set.
+ At the same time, some key words with lower occurrences in our training
+ set are ignored as well although they are quite significant for sentiment
+ analysis.
+ In our future work, we will add key words to the features after feature
+ selection.
+ 
 \end_layout
 
 \begin_layout Standard
-facebook youtube google buzz in the future
+As we looked into the features, we found that there are still quite a lot
+ of noise in it.
+ In our future research, we would like to build a vocabulary from our daily
+ used words, and then implement word correction on the training and test
+ date based on the vocabulary.
+ 
+\end_layout
+
+\begin_layout Standard
+Trying the similar approach on different languages is also an interesting
+ topic for us, such as sentiment analysis on Indian or Chinese in our case.
+ In China, the first Microblog website has just started since last September,
+ and there are a considerable number of Twitter like platforms joining the
+ developing market.
+ Although there was supposed to be large differences in the preprocessing
+ level, we thing the selection of features and classification can be implement
+ in a similar way.
+ 
+\end_layout
+
+\begin_layout Standard
+Moreover, in this paper, we did not handle the neutral class(non-positive
+ and non-negative).
+ We will try multi-class machine learning approach in the future.
+ For the neutral class, the a headline of news or a sentence from Wikipedia
+ would be a good source of training data.
 \end_layout
 
 \begin_layout Section
@@ -1210,10 +1378,6 @@ options "plain"
 \end_inset
 
 
-\end_layout
-
-\begin_layout Section*
-Appendix
 \end_layout
 
 \end_body

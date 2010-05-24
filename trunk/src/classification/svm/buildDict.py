@@ -25,6 +25,7 @@ for line in lines:
 	tweet = line[1]
 	dict = buildDict(tweet,dict)
 
-dictfile = open("DICT",'w')
-pickle.dump(dict,dictfile)
+dictfile = open("print",'w')
+for key in dict:
+	dictfile.write(key+";"+str(dict[key])+"\n")
 dictfile.close()
