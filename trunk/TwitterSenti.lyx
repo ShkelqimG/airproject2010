@@ -515,7 +515,7 @@ name "alg:regular-expression-patterns"
 
 \end_inset
 
-regular expression patterns of preprocessing
+regular expression patterns for preprocessing
 \end_layout
 
 \end_inset
@@ -871,7 +871,7 @@ name "fig:accuracy-features"
 
 \end_inset
 
-unigram feature selection with default libSVM settings
+unigram feature selection with default parameters
 \end_layout
 
 \end_inset
@@ -996,6 +996,94 @@ the searching grid was
 \end_inset
 
 .
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/SVMparamC.eps
+	width 39page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:choose-parameter-C"
+
+\end_inset
+
+parameter C with different SVM kernel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We tried linear kernel SVM with a grid search of 
+\begin_inset Formula $C$
+\end_inset
+
+.
+ The result(red curve) is shown in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:choose-parameter-C"
+
+\end_inset
+
+.
+ We found that 
+\begin_inset Formula $C=2^{-3}$
+\end_inset
+
+ is a good choice with the highest accuracy over 80.8%.
+ But when the 
+\begin_inset Formula $C$
+\end_inset
+
+ growed to 
+\begin_inset Formula $2^{2}$
+\end_inset
+
+, it takes more than 20 hours to finish the training.
+ The black curve shows the perfomance of RBF kernel.
+ In this experiment, the default 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ in libSVM was used and we can see that RBF kernel is not better than linear
+ kernel unless the best pair of 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ and 
+\begin_inset Formula $C$
+\end_inset
+
+ is used.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "keerthi2003asymptotic"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -1003,6 +1091,7 @@ Evaluation
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Float table
 wide false
 sideways false
@@ -1124,6 +1213,7 @@ confusion matrix of key words classifier
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Float table
 wide false
 sideways false
@@ -1131,7 +1221,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="5">
+<lyxtabular version="3" rows="4" columns="5">
 <features>
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -1217,7 +1307,54 @@ unigram
 \begin_inset Text
 
 \begin_layout Plain Layout
+80.87%
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bigram
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+N/A
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+66.12%
 \end_layout
 
 \end_inset
@@ -1237,7 +1374,7 @@ unigram
 \begin_inset Text
 
 \begin_layout Plain Layout
-bigram
+unigram+bigram
 \end_layout
 
 \end_inset
@@ -1246,16 +1383,7 @@ bigram
 \begin_inset Text
 
 \begin_layout Plain Layout
--
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+N/A
 \end_layout
 
 \end_inset
@@ -1265,6 +1393,15 @@ bigram
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+65.03%
 \end_layout
 
 \end_inset
