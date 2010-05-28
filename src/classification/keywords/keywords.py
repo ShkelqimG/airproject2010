@@ -18,12 +18,12 @@ negFile.close()
 print "key words Done"
 
 db = []
-address ="/home/huninghang/workspace/twitterSenti/DB/p1:paperdata/testdata.manual.2009.05.25"
+address ="../../../DB/testset/Step3.rmPUNC"
 dbfile = open(address,'r')
 lines = dbfile.read().splitlines()
 for line in lines:
 	all = line.split(';;')
-	tweet = all[5]
+	tweet = all[1]
 	if all[0] == '0':
 		label = -1
 	if all[0] == '4':
