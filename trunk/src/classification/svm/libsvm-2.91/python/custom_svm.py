@@ -4,7 +4,7 @@ import pickle
 
 print "loading dictionary..."
 # load dictionary
-dictfile = open("/home/huninghang/workspace/twitterSenti/src/classification/svm/DICT")
+dictfile = open("../../DICT")
 dict = pickle.load(dictfile)
 dictfile.close()
 "Done"
@@ -23,18 +23,18 @@ idx = {}
 for key in dict:
 	idx[key] = i
 	i += 1
-print len(dict)
+print "dict length =",len(dict)
 
 #print "loading train set..."
 # load twitter data base
-file = open("/home/huninghang/workspace/twitterSenti/DB/trainset/Step3.rmPUNC",'r')
+file = open("../../../../../DB/trainset/Step3.rmPUNC",'r')
 linesTrain = file.read().splitlines()
 file.close()
 #print "Done"
 
 #print "loading test set..."
 # load twitter data base
-file = open("/home/huninghang/workspace/twitterSenti/DB/testset/Step3.rmPUNC",'r')
+file = open("../../../../../DB/testset/Step3.rmPUNC",'r')
 linesTest = file.read().splitlines()
 file.close()
 print "Done"
@@ -67,16 +67,16 @@ for line in lines:
 	x.append(xi)
 
 fileNr = 0
-for i in range(3,16,2):
+for i in [1]:
 	c = 2**i
 	try:
-		param = '-s 0 -c '+str(c)+' -t 0 -h 0'
+		param = '-s 1 -t 0'
 		fileNr += 1
 		print "Training! Nr:",fileNr,param 
 		m = svm_train(y[0:len(linesTrain)],x[0:len(linesTrain)],param)
-		#file = open("model"+str(fileNr),'w')
-		#svm_save_model(file.name,m)
-		#file.close()
+		file = open("model"+str(fileNr),'w')
+		svm_save_model(file.name,m)
+		file.close()
 		print "Training Done!"
 
 		#m = svm_load_model('/result_models/SVMmodel2')
