@@ -1,8 +1,8 @@
-#LyX 1.6.4 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
-\textclass sigplanconf
+\textclass IEEEtran
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -56,7 +56,7 @@ Ravi Gupta and Ninghang Hu
 \end_layout
 
 \begin_layout Date
-April 16, 2010
+May 26, 2010
 \end_layout
 
 \begin_layout Abstract
@@ -84,15 +84,37 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Twitter is a social network website and it provides the users with services
- of sending or reading a message, which is also known as a tweet.
- The sentiment information of tweets is quite interesting because they are
- posted by individuals, and sometimes they show the users's emotion or attitude
- to certain events.
+In present internet era, we are seeing a lot of internet users are using
+ internet for interaction among each other and share information which is
+ called social media.
+ Social media can have various forms like messages, pictures or video etc.
+ These social media have great use in multiple ways and one of the important
+ ways it to share sentiments or what we feel about something for example
+ a video or a blog review of a product like camera, movie, political situations
+ etc., picture review of a new gadget etc.
+ And this sentiment is very useful for both the customers and the companies
+ for product reviews and product feedback respectively.
 \end_layout
 
 \begin_layout Standard
-Our aim is to build a system that can classify positive and negative messsage
+For sharing such social media we have lots of social website and one of
+ the largest social media sharing website is Twitter.
+ Twitter provides its user a way to share short messages maximum of 140
+ characters as the social media.
+ Users can send and read these short messages.
+ This short message is known as a tweet.
+ Twitter has more than 100 million users and there are 1.5 million tweets
+ posted per hour.
+ The sentiment information of tweets is quite interesting because they are
+ posted by individuals, and sometimes they show the users's personal and
+ unformal emotion or attitude to certain events.
+\end_layout
+
+\begin_layout Standard
+We choose sentiment analysis of tweets because of the interesting nature
+ of the sentiment presentation in tweets and large dataset availability
+ due to large website of Twitter.
+ Our aim is to build a system that can classify positive and negative messsage
  by using supervised learning.
  In the training part, supervised learning usually requires hand-labeled
  training data.
@@ -108,17 +130,124 @@ key "read2005using"
 
 .
  The emoticons serve as noisy labels.
- For example, :) in a tweet indicates that the tweet contains negative sentiment.
+ For example, :) in a tweet indicates that the tweet contains positive sentiment.
  With the help of the Twitter API, it is easy to extract large amounts of
  tweets with emoticons in them.
  This is a significant improvement over the many hours it may otherwise
  take to hand-label training data.
- We run classifiers trained on emoticon data against a test set of tweets
- (which may or may not have emoticons in them).
+ We run classifiers trained on emoticon data against a test set of tweets,
+ which may or may not have emoticons in them.
 \end_layout
 
 \begin_layout Section
-Data Preparasion
+Background
+\end_layout
+
+\begin_layout Standard
+Sentiment analysis is a research area in the subject of Natural Language
+ Processing and Text Mining.
+ Research work has been done in different kind of text like blogs, movie
+ review data etc.
+ But sentiment analysis of tweets is significantly different from blog's
+ and review's sentiment analysis.
+ There are also few work of sentiment analysis with the twitter data.
+ Below we discuss about previous related work.
+\end_layout
+
+\begin_layout Subsection
+Tweets
+\end_layout
+
+\begin_layout Standard
+Tweets are very much different that other text formats like blogs, normal
+ reviews or webpages.
+ Some of the differences are following:
+\end_layout
+
+\begin_layout Itemize
+Tweets are generally 1 or 2 sentences with maximum of 140 characters.
+ Whereas blogs or other reviews are generally very much bigger in size.
+\end_layout
+
+\begin_layout Itemize
+Tweets are informal compared to blogs or reviews which are formal.
+\end_layout
+
+\begin_layout Itemize
+Tweets are less ambiguos due limited expressive nature inherited from the
+ its size limit as compared to blogs or other texts in which two opposite
+ thoughts can be expressed.
+\end_layout
+
+\begin_layout Itemize
+Normally in larger text sentiment analysis we are focused in some specific
+ domain whereas even tweets of a single user are widely exposed to multiple
+ domains.
+\end_layout
+
+\begin_layout Standard
+Also due to the unique nature of tweets, they give new challenges to the
+ system.
+\end_layout
+
+\begin_layout Itemize
+Tweets are full of slang or colloquialisms e.g.
+ mKay (I am ok).
+\end_layout
+
+\begin_layout Itemize
+Tweets have grammatical and spelling error which are unconventional error
+ e.g.
+ luuuuuuuvvvv, hellllloooo.
+\end_layout
+
+\begin_layout Itemize
+Most tweets consist of link only.
+\end_layout
+
+\begin_layout Itemize
+Also few text in a tweet due to its character limit of 140.
+\end_layout
+
+\begin_layout Subsection
+Previous Work
+\end_layout
+
+\begin_layout Standard
+There are some work done in sentiment analysis.
+ Some of the previous work we come accross are Parikh & Movassate[1], Go[2]
+ and Lewin [3].
+ For their work they used small dataset which is manually annotated or bigger
+ dataset which is automatically obtained and annotated based on emoticons.
+ They tried various machince learning techniques in various ways, all machine
+ learning algorithms are following: 
+\end_layout
+
+\begin_layout Itemize
+Naive Bayes
+\end_layout
+
+\begin_layout Itemize
+Maximum Entropy
+\end_layout
+
+\begin_layout Itemize
+Keyword based,
+\end_layout
+
+\begin_layout Itemize
+Support Vector Machine
+\end_layout
+
+\begin_layout Section
+Data Preparation
+\end_layout
+
+\begin_layout Standard
+We are collecting tweets data set ourslef using the Twitter search result.
+ We are using the noisy label method,emoticons based search, for data collection.
+ Then we are processing the tweet dataset for training and testing.
+ All these steps are explained in the following subsections.
 \end_layout
 
 \begin_layout Subsection
@@ -148,7 +277,7 @@ www.tweespeed.com-TweeSpeed The Twitter Instant Speed Meter
 \end_inset
 
 .
- However, our approach only focused on the data with smile or frown emoticons
+ However, our approach only focused on the data with smile or sad emoticons
  which is approximately 1% of the whole tweet collection.
  The number of tweets we got per hour is 15,000.
  This was partly due to the limitation of Twitter API.
@@ -376,8 +505,8 @@ Mapping of Emoticons
 \end_layout
 
 \begin_layout Standard
-We run the scrapper for approximately 40 hours and totally 384397 tweets
- were collected(including 232442 with positive emoticons and 151955 with
+We run the scrapper for approximately 40 hours and totally 384,397 tweets
+ were collected(including 232,442 with positive emoticons and 151,955 with
  negative emoticons).
 \end_layout
 
@@ -386,29 +515,30 @@ Preprocessing
 \end_layout
 
 \begin_layout Standard
-Tweet is quite different from formal languages.
- As in twitter, most of the users prefer to use short cut words, emoticons
+Languase used in tweets is quite different from formal language.
+ As in tweets, most of the users prefer to use short cut words, emoticons
  and loop characters to express their ideas.
  Some users upload tweets by mobile phones and they are more likely to type
  at a high speed, which resulted in spelling errors.
- Besides the usernames and the links should also be considered as they should
- not affect the result of classification.
+ Also the usernames and the links should be properly handled as they should
+ not affect the result of classification since they will not contribute
+ to the sentiment of a tweet..
  As a result of all these features, preprocessing is quite crucial on reducing
  the side effect of casual language and the dimension of the feature space.
 \end_layout
 
 \begin_layout Enumerate
-Duplicated tweets
+Duplicate Tweets:
 \begin_inset Newline newline
 \end_inset
 
 We used the tweets with emoticons as our training data.
  As users are unlikely to add emoticon all the time and the limitation of
- Twitter API, only a small number of tweets can be get every hour.
+ Twitter API, only a small number of tweets can be obtained every hour.
  But our search frequency was set quite high to get as many tweets as possible,
- which resulted in a lot of duplicates.
+ which resulted in retrieving lot of duplicates.
  We simply recorded the tweet ID while searching and remove all the duplicated
- data.
+ tweets using the tweet ID.
 \end_layout
 
 \begin_layout Enumerate
@@ -543,8 +673,8 @@ LOOOOVVVVEEEE
 \end_inset
 
  to expressive their feelings.
- In commonly used English, we found that there is hardly any characters
- showing consecutively more than two times.
+ In common use, we found that there is hardly any character repeating consecutiv
+ely more than two times in an English word.
  So we changed the word into 
 \begin_inset Quotes eld
 \end_inset
@@ -561,7 +691,7 @@ Tweet include both smiley and frowny emoticons
 \begin_inset Newline newline
 \end_inset
 
-As we searched the both smile and frown emoticons separately, some tweets
+As we searched the both smile and sad emoticons separately, some tweets
  with both negative and positive emotions were present on both dataset.
  We removed these tweets from our training set.
  For example, 
@@ -601,6 +731,7 @@ typical!
 \end_inset
 
  would cause noise if it was added to the features.
+ So punctuations are removed.
 \end_layout
 
 \begin_layout Enumerate
@@ -611,7 +742,7 @@ typical!
 In the search result of Twitter API, the emoticon :P is considered as a
  unhappy emotion.
  However, we found that most of the time :P indicates a positive status.
- Thus is our experiment, we removed all the terms including :P emoticon.
+ Thus in our experiment, we removed all the tweets containing :P emoticon.
  
 \end_layout
 
@@ -620,7 +751,7 @@ Test set
 \end_layout
 
 \begin_layout Standard
-For the test set, we used a manually anotated dataset
+For the test set, we used a manually annotated dataset
 \begin_inset CommandInset citation
 LatexCommand citet
 key "go-twitter"
@@ -628,12 +759,12 @@ key "go-twitter"
 \end_inset
 
 .
- It contains 183 tweets which were selected from different topics.
+ Test set contains 183 tweets which were selected from different topics.
  All the tweets have their labels for which class they belong to.
 \end_layout
 
 \begin_layout Section
-Classification
+Classifiers
 \end_layout
 
 \begin_layout Subsection
@@ -669,7 +800,7 @@ Key words classifier is a straight forward way of sentiment classification.
 status open
 
 \begin_layout Plain Layout
-www.twittratr.com
+www.twitrratr.com
 \end_layout
 
 \end_inset
@@ -680,6 +811,192 @@ www.twittratr.com
 
 \begin_layout Subsection
 Naive Bayes Classifier
+\end_layout
+
+\begin_layout Standard
+Naive Bayes classifier uses Bayes rule of probability to compute the posterior
+ probability of the class given the data with a very stong assumption.
+ The strong assumption which this classifier makes is that the features
+ are independent of each other.
+\end_layout
+
+\begin_layout Standard
+The posterior probability of a class 
+\begin_inset Formula $C_{k}$
+\end_inset
+
+ given the tweet 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+is given by: 
+\begin_inset Formula \[
+p(C_{k}|\mathbf{x})=\frac{p(\mathbf{x}|C_{k})p(C_{k})}{\sum_{i}p(\mathbf{x}|C_{i})p(C_{i})}\]
+
+\end_inset
+
+ Tweet 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+is a 
+\begin_inset Formula $d$
+\end_inset
+
+ dimensional vector of features 
+\begin_inset Formula $=\{\mathbf{f}_{1},\mathbf{f}_{2},...,\mathbf{f}_{d}\}$
+\end_inset
+
+.
+ And based on the assumption that the features are independent, the likelihood
+ is given as following:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+p(\mathbf{x}|C_{k})=\prod_{i=1}^{d}p(\mathbf{f}_{i}|C_{k})\]
+
+\end_inset
+
+Three different models for sentiment classification of tweets were implemented
+ using python programming language.
+ The implementation of models is very general and simply varying some of
+ the parameters of the program different models can also be created.
+ But we restricted to the following models because of unique nature of tweet:
+\end_layout
+
+\begin_layout Enumerate
+Unigram Model: In this model each word 
+\begin_inset Formula $\mathbf{w}_{n}$
+\end_inset
+
+ in a tweet 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+is a feature 
+\begin_inset Formula $\mathbf{f}_{i}$
+\end_inset
+
+.
+ So 
+\begin_inset Formula $\mathbf{\mathbf{f}}_{i}$
+\end_inset
+
+is a feautre then its likelihood is given as following:
+\begin_inset Formula \[
+p(\mathbf{f}_{i}|C)=\frac{count(\mathbf{\mathbf{f}}_{i},C)}{count(C)}\]
+
+\end_inset
+
+ where 
+\begin_inset Formula $count(\mathbf{\mathbf{f}}_{i},C)=$
+\end_inset
+
+no.
+ of times the feature 
+\begin_inset Formula $\mathbf{f}_{i}$
+\end_inset
+
+(or the word
+\begin_inset Formula $\mathbf{w}_{n}$
+\end_inset
+
+) comes in the class 
+\begin_inset Formula $C$
+\end_inset
+
+ and 
+\begin_inset Formula $count(C)=$
+\end_inset
+
+total no.
+ of features (or words) in class 
+\begin_inset Formula $C$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Bigram Model: In this model two consecutive words (
+\begin_inset Formula $\mathbf{w}_{n}\mathbf{w}_{n+1}$
+\end_inset
+
+) in a tweet 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ is a feature 
+\begin_inset Formula $\mathbf{f}_{i}$
+\end_inset
+
+.
+ And its likelohood is given similar to above, with the modification that:
+ 
+\begin_inset Formula $count(\mathbf{\mathbf{f}}_{i},C)=$
+\end_inset
+
+no.
+ of times the feature 
+\begin_inset Formula $\mathbf{f}_{i}$
+\end_inset
+
+(or the consecutive word pair
+\begin_inset Formula $\mathbf{w}_{n}\mathbf{w}_{n+1}$
+\end_inset
+
+) comes in the class 
+\begin_inset Formula $C$
+\end_inset
+
+ and 
+\begin_inset Formula $count(C)=$
+\end_inset
+
+total no.
+ of features (or consecutive word pairs) in class 
+\begin_inset Formula $C$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Linear combination of Unigram and Bigram Model: This model is linear combination
+ of the above two models.
+ So we have:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+ 
+\begin_inset Formula \[
+p(C_{k}|\mathbf{x})=\alpha p_{1}(C_{k}|\mathbf{x})+(1-\alpha)p_{2}(C_{k}|\mathbf{x})\]
+
+\end_inset
+
+ where 
+\begin_inset Formula $\alpha\mathbf{\mathtt{\epsilon}}(0,1)$
+\end_inset
+
+is parameter calculated from the experiment and 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+and 
+\begin_inset Formula $p_{2}$
+\end_inset
+
+values are calculated using the above model 1 and 2 respectively.
+\end_layout
+
+\begin_layout Standard
+Laplace add one smoothing is used for unseen features.
 \end_layout
 
 \begin_layout Subsection
@@ -1003,7 +1320,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/SVMparamC.eps
+	filename SVMparamC.eps
 	width 39page%
 
 \end_inset
@@ -1086,8 +1403,49 @@ key "keerthi2003asymptotic"
 
 \end_layout
 
+\begin_layout Subsection
+Maximum Entropy Classifier
+\end_layout
+
+\begin_layout Standard
+Maximum Entropy Modeling also known as multinomial logistic regression.
+ This method belongs to the family of classifiers known as the exponential
+ or log-linear classifiers.
+ Given the inputs which are tweets here we select feautres and for each
+ feature we have some weight for each class and this we use to calculate
+ the maximum likelihood of the tweet class.
+ The likelihood is given as following:
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+\begin_inset Formula \[
+P(C_{k}|\mathbf{x})=\frac{1}{Z(\mathbf{x})}e^{\sum_{i}\lambda_{i,C_{k}}f_{i,C_{k}}(\mathbf{x},C_{k})}\]
+
+\end_inset
+
+ We used Mallet package for this classifier.
+ Mallet is a Java based package which also contains MaxEnt classifier.
+\end_layout
+
+\begin_layout Subsection
+Decision Tree Classifier
+\end_layout
+
 \begin_layout Section
 Evaluation
+\end_layout
+
+\begin_layout Standard
+This section has all the results obtained
 \end_layout
 
 \begin_layout Standard
@@ -1105,11 +1463,13 @@ status open
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Prediction
+\backslash
+Class
 \end_layout
 
 \end_inset
@@ -1199,7 +1559,7 @@ Prediction Negative
 \begin_inset Caption
 
 \begin_layout Plain Layout
-confusion matrix of key words classifier
+Confusion matrix of Key Words Classifier
 \end_layout
 
 \end_inset
@@ -1221,10 +1581,8 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="5">
+<lyxtabular version="3" rows="3" columns="3">
 <features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -1233,7 +1591,9 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Prediction
+\backslash
+Class
 \end_layout
 
 \end_inset
@@ -1242,25 +1602,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-Key words
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Naive Bayes
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-SVM
+Class Positive
 \end_layout
 
 \end_inset
@@ -1269,7 +1611,7 @@ SVM
 \begin_inset Text
 
 \begin_layout Plain Layout
-...
+Class Negative
 \end_layout
 
 \end_inset
@@ -1280,7 +1622,734 @@ SVM
 \begin_inset Text
 
 \begin_layout Plain Layout
-unigram
+Prediction Positive
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+84
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+19
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction Negative
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+24
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+56
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Confusion matrix of Unigram Naive Bayes Classifier
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction
+\backslash
+Class
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Class Positive
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Class Negative
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction Positive
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+88
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+36
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction Negative
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+20
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+39
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Confusion matrix of Bigram Naive Bayes Classifier
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction
+\backslash
+Class
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Class Positive
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Class Negative
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction Positive
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+84
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+19
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction Negative
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+24
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+56
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Confusion matrix of Unigram and Bigram combination Naive Bayes Classifier
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For MaxEnt we used the Mallet tool as we found it difficult to implement
+ it ourself.
+ We used the command line system of the Mallet tool.
+ Mallet does not has the facility of doing training and testing seperately
+ so we did cross validation with it.
+ We used random 90% of data as training and 10% as testing with total of
+ 25 no.
+ of trials(experiments).
+ Using the command line functions we obtained F1 score, Accuracy and confusion
+ matrix for each trail.
+ Table 6 is the worst accuracy confusion matrix for MaxEnt classifier.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction
+\backslash
+Class
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Class Positive
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Class Negative
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction Positive
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1555
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+425
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prediction Negative
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+414
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1598
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Confusion Matrix(min accuracy) of MaxEnt in Cross Validation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+F1 score for both positive and negative class and accuracy from the cross
+ validation setup of MaxEnt classifier are following:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+F1 Positive Tweet
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+F1 Negative Tweet
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Accuracy
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Worst Trial
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.7875
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.7942
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+78.98%
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Best Trial
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.8693
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.8781
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+86.90%
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Avg.
+ Trial
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.8394
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.8415 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+83.99%
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+MaxEnt Result
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We also did Decision tree experiment in a cross validation setup using the
+ Mallet toolkit.
+ The experimental parameters used are 90% data for training, 10% testing
+ and 25 no.
+ of trials.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Unigram
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bigram
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Unigram+Bigram
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Key Words
 \end_layout
 
 \end_inset
@@ -1298,6 +2367,35 @@ unigram
 \begin_inset Text
 
 \begin_layout Plain Layout
+N/A
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+N/A
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Naive Bayes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 76.5%
 \end_layout
 
@@ -1307,7 +2405,7 @@ unigram
 \begin_inset Text
 
 \begin_layout Plain Layout
-80.87%
+69.4%
 \end_layout
 
 \end_inset
@@ -1327,7 +2425,7 @@ unigram
 \begin_inset Text
 
 \begin_layout Plain Layout
-bigram
+SVM
 \end_layout
 
 \end_inset
@@ -1336,16 +2434,7 @@ bigram
 \begin_inset Text
 
 \begin_layout Plain Layout
-N/A
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+80.87%
 \end_layout
 
 \end_inset
@@ -1363,7 +2452,45 @@ N/A
 \begin_inset Text
 
 \begin_layout Plain Layout
+65.03%
+\end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MaxEnt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+83.99%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+N/A
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+N/A
 \end_layout
 
 \end_inset
@@ -1374,16 +2501,7 @@ N/A
 \begin_inset Text
 
 \begin_layout Plain Layout
-unigram+bigram
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-N/A
+Decision Tree
 \end_layout
 
 \end_inset
@@ -1401,7 +2519,7 @@ N/A
 \begin_inset Text
 
 \begin_layout Plain Layout
-65.03%
+
 \end_layout
 
 \end_inset
@@ -1421,14 +2539,21 @@ N/A
 \end_inset
 
 
+\end_layout
+
+\begin_layout Plain Layout
 \begin_inset Caption
 
 \begin_layout Plain Layout
-accuracy
+Accuracy of various Classfiers
 \end_layout
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -1438,7 +2563,218 @@ accuracy
 \end_layout
 
 \begin_layout Standard
-neutral class
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Positive Tweets
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Negative Tweets
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Key Words
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Naive Bayes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SVM
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MaxEnt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Decision Tree
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+F1 score of various Classfiers
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1480,6 +2816,12 @@ As we looked into the features, we found that there are still quite a lot
  used words, and then implement word correction on the training and test
  date based on the vocabulary.
  
+\end_layout
+
+\begin_layout Standard
+For training purpose we used emoticons based noisy labeled data which has
+ a big effect on the final output, as a future work we would like to see
+ how the experiment works with correctly manually annotated data.
 \end_layout
 
 \begin_layout Standard
